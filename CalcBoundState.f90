@@ -108,7 +108,7 @@ program Calc2BodyBoundState
      write(6,*) 'Energy Eigenvalue (',n,') = ', eval(n)
   end do
   
-  ikeep=29
+  ikeep=28
 
   x=0.0d0
   xMax=5.d0
@@ -147,7 +147,6 @@ subroutine CalcHamiltonian(lwave)
      enddo
   enddo
 
-
   do ix = 1,xDim
      do ixp = max(1,ix-Order),min(xDim,ix+Order)
         H0(ix,ixp)=0.0d0
@@ -164,9 +163,12 @@ subroutine CalcHamiltonian(lwave)
            TempV = 0.0d0
            do lx = 1,LegPoints
               a = wLeg(lx)*xIntScale
+              !x=xIntPoints(lx,kx)!
               x=xIntScale*xLeg(lx)+xScaledZero
               TempS = TempS + a*u(lx,kx,ix)*u(lx,kx,ixp)
               TempV = TempV + a*u(lx,kx,ix)*(alpha*Vsqrc6(DD,x0,x,lwave))*u(lx,kx,ixp)
+              iRall = (kx-1)*LegPoints + lx
+              !TempV = TempV + a*u(lx,kx,ix)*(alpha*VR(iRall) + lwave*(lwave+1d0)/(2d0*mu*xIntPoints(lx,kx)**2))*u(lx,kx,ixp)
               TempT = TempT + a*0.5d0/mu*(-u(lx,kx,ix)*uxx(lx,kx,ixp))
 !              print*,a, TempS, TempT, TempV
            enddo
